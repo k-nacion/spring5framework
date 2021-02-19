@@ -17,9 +17,10 @@ public class BootstrapData implements CommandLineRunner {
     private final BookRepository bookRepository;
     private final PublisherRepository publisherRepository;
 
-    public BootstrapData(AuthorRepository authorRepository, BookRepository bookRepository) {
+    public BootstrapData(AuthorRepository authorRepository, BookRepository bookRepository, PublisherRepository publisherRepository) {
         this.authorRepository = authorRepository;
         this.bookRepository = bookRepository;
+        this.publisherRepository = publisherRepository;
     }
 
     @Override
@@ -27,7 +28,7 @@ public class BootstrapData implements CommandLineRunner {
 
         Author eric = new Author("Eric", "Evans");
         Book domainDrivenDesign = new Book("Domain Driven Design", "12312312");
-        Publisher publisher = new Publisher("Sample Publisher", new Address("Line 1 ", "Taguig", "US", 1630));
+        Publisher publisher = new Publisher("Sample Publisher", "Line 1", "Taguig City", "Metro manila", 1630);
 
         eric.getBooks().add(domainDrivenDesign);
         domainDrivenDesign.getAuthors().add(eric);
@@ -35,9 +36,14 @@ public class BootstrapData implements CommandLineRunner {
         authorRepository.save(eric);
         bookRepository.save(domainDrivenDesign);
 
+        publisherRepository.save(publisher);
+
         System.out.println("Spring boot application Starter");
         System.out.println("number of books: " + bookRepository.count());
+        System.out.println("List of Publishers:\n\t");
+        publisherRepository.findAll().forEach(System.out::println);
     }
+
 
 
 }
